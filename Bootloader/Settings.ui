@@ -14,8 +14,8 @@
    <string>Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/MainWindow/img/microchip.png</normaloff>:/MainWindow/img/microchip.png</iconset>
+   <iconset resource="resources.qrc">
+    <normaloff>:/MainWindow/img/Senso.ico</normaloff>:/MainWindow/img/Senso.ico</iconset>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -86,7 +86,9 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

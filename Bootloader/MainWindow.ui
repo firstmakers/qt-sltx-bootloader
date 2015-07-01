@@ -17,11 +17,11 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string notr="true">USB HID Bootloader SLTH</string>
+   <string notr="true">Senso Bootloader</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/MainWindow/img/Microchip_logo.Ico</normaloff>:/MainWindow/img/Microchip_logo.Ico</iconset>
+    <normaloff>:/MainWindow/img/Senso.ico</normaloff>:/MainWindow/img/Senso.ico</iconset>
   </property>
   <property name="locale">
    <locale language="Spanish" country="Chile"/>

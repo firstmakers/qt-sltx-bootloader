@@ -58,7 +58,7 @@
 #define RESET_DEVICE        0x08
 #define SIGN_FLASH			0x09	//The host PC application should send this command after the verify operation has completed successfully.  If checksums are used instead of a true verify (due to ALLOW_GET_DATA_COMMAND being commented), then the host PC application should send SIGN_FLASH command after is has verified the checksums are as exected. The firmware will then program the SIGNATURE_WORD into flash at the SIGNATURE_ADDRESS.
 #define QUERY_EXTENDED_INFO 0x0C    //Used by host PC app to get additional info about the device, beyond the basic NVM layout provided by the query device command
-
+#define BOOTLOADER_MODE 0x80
 // Maximum number of memory regions that can be bootloaded
 #define MAX_DATA_REGIONS    0x06
 
@@ -81,7 +81,7 @@ protected:
     hid_device *boot_device;
     bool connected;
     bool hid_status;
-    bool boot_status;;
+    bool boot_status;
 
 public:
 

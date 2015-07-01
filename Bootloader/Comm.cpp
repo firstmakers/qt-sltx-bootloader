@@ -176,7 +176,7 @@ void Comm::TurnOnBootLoaderMode(void){
 
     if(connected) {
         memset((void*)&sendPacket, 0x00, sizeof(sendPacket));
-        sendPacket[1] = 0x85;
+        sendPacket[1] = BOOTLOADER_MODE;
 
         qDebug("Reiniciando en modo bootloader");
         elapsed.start();

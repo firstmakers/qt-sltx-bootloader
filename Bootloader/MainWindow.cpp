@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     timer = new QTimer();
 
     ui->setupUi(this);
-    setWindowTitle(APPLICATION + QString(" v") + VERSION);
+   // setWindowTitle(APPLICATION + QString(" v") + VERSION);
 
     QSettings settings;
     settings.beginGroup("MainWindow");
@@ -110,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     this->statusBar()->addPermanentWidget(&deviceLabel);
-    deviceLabel.setText("Disconnected");
+    deviceLabel.setText("Deconectado");
 
     //Make initial check to see if the USB device is attached
     comm->PollUSB();
@@ -124,14 +124,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     {
         qWarning("Attempting to open device...");
         comm->open();
-        ui->plainTextEdit->setPlainText("Device Attached.");
-        ui->plainTextEdit->appendPlainText("Connecting...");
+        ui->plainTextEdit->setPlainText("Dispositivo conectado.");
+        ui->plainTextEdit->appendPlainText("Conectando...");
         GetQuery();
     }
     else
     {
         ui->plainTextEdit->appendPlainText("Device not detected.  Verify device is attached and in firmware update mode.");
-        deviceLabel.setText("Disconnected");
+        deviceLabel.setText("Desconectado");
         hexOpen = false;
         setBootloadEnabled(false);
         emit SetProgressBar(0);
@@ -196,8 +196,8 @@ void MainWindow::Connection(void)
         {
             qWarning("Attempting to open device...");
             comm->open();
-            ui->plainTextEdit->setPlainText("Device Attached.");
-            ui->plainTextEdit->appendPlainText("Connecting...");
+            ui->plainTextEdit->setPlainText("Dispositivo Conectado.");
+            ui->plainTextEdit->appendPlainText("Conectando...");
             if(writeConfig)
             {
                 //ui->plainTextEdit->appendPlainText("Disabling Erase button to prevent accidental erasing of the configuration words without reprogramming them\n");
@@ -216,10 +216,10 @@ void MainWindow::Connection(void)
         }
         else
         {
-            qWarning("Closing device.");
+            qWarning("Terminando comunicación.");
             comm->close();
-            deviceLabel.setText("Disconnected");
-            ui->plainTextEdit->setPlainText("Device Detached.");
+            deviceLabel.setText("Desconectado");
+            ui->plainTextEdit->setPlainText("Dispositivo desconectado.");
             hexOpen = false;
             setBootloadEnabled(false);
             emit SetProgressBar(0);
@@ -296,23 +296,23 @@ void MainWindow::IoWithDeviceComplete(QString msg, Comm::ErrorCode result, doubl
     switch(result)
     {
         case Comm::Success:
-            ss << " Complete (" << time << "s)\n";
+            ss << " Completado (" << time << "s)\n";
             setBootloadBusy(false);
             break;
         case Comm::NotConnected:
-            ss << " Failed. Device not connected.\n";
+            ss << " Falló. Dispositivo no conectado.\n";
             setBootloadBusy(false);
             break;
         case Comm::Fail:
-            ss << " Failed.\n";
+            ss << " Falló.\n";
             setBootloadBusy(false);
             break;
         case Comm::IncorrectCommand:
-            ss << " Failed. Unable to communicate with device.\n";
+            ss << " Falló.No se ha podido comunicar con el dispositivo.\n";
             setBootloadBusy(false);
             break;
         case Comm::Timeout:
-            ss << " Timed out waiting for device (" << time << "s)\n";
+            ss << " Se acabó el tiempo de espera. (" << time << "s)\n";
             setBootloadBusy(false);
             break;
         default:
@@ -652,17 +652,16 @@ void MainWindow::VerifyDevice()
 
     if(failureDetected == true)
     {
-        emit AppendString("Operation aborted due to error encountered during verify operation.");
-        emit AppendString("Please try the erase/program/verify sequence again.");
-        emit AppendString("If repeated failures are encountered, this may indicate the flash");
-        emit AppendString("memory has worn out, that the device has been damaged, or that");
-        emit AppendString("there is some other unidentified problem.");
+        emit AppendString("Se ha interrumpido la operación se encontro un error de verificación.");
+        emit AppendString("Por favor intente cargar el firmware nuevamente.");
+        emit AppendString("Si este error es recurrente puede que el dispositivo");
+        emit AppendString("esté dañado");
     }
     else
     {
         emit IoWithDeviceCompleted("Verify", Comm::Success, ((double)elapsed.elapsed()) / 1000);
-        emit AppendString("Erase/Program/Verify sequence completed successfully.");
-        emit AppendString("You may now unplug or reset the device.");
+        emit AppendString("Secuencia Finalizada...");
+        emit AppendString("Ahora puede desconectar el dispositivo.");
     }
 
     emit SetProgressBar(100);   //Set progress bar to 100%
@@ -674,8 +673,8 @@ void MainWindow::on_actionWrite_Device_triggered()
 {
     future = QtConcurrent::run(this, &MainWindow::WriteDevice);
     ui->plainTextEdit->clear();
-    ui->plainTextEdit->appendPlainText("Starting Erase/Program/Verify Sequence.");
-    ui->plainTextEdit->appendPlainText("Do not unplug device or disconnect power until the operation is fully complete.");
+    ui->plainTextEdit->appendPlainText("Comenzando la sequencia Borrar/Programar/Verificar.");
+    ui->plainTextEdit->appendPlainText("No desconecte el dispositivo hasta que termine la operación.");
     ui->plainTextEdit->appendPlainText(" ");
 }
 
@@ -1048,7 +1047,7 @@ void MainWindow::on_action_About_triggered()
     QString msg;
     QTextStream stream(&msg);
 
-    stream << "USB HID Bootloader v" << VERSION << "\n";
+    stream << "Senso Bootloader v" << VERSION << "\n";
     stream << "Copyright " << (char)Qt::Key_copyright << " 2011-2013,  Microchip Technology Inc.\n\n";
 
     stream << "Microchip licenses this software to you solely for use with\n";
@@ -1103,15 +1102,15 @@ void MainWindow::GetQuery()
     {
         case Comm::Fail:
         case Comm::IncorrectCommand:
-            ui->plainTextEdit->appendPlainText("Unable to communicate with device\n");
+            ui->plainTextEdit->appendPlainText("No se ha establecido comunicación con el dispositivo\n");
             return;
         case Comm::Timeout:
-            ss << "Operation timed out";
+            ss << "Timed out";
             break;
         case Comm::Success:
             wasBootloaderMode = true;
-            ss << "Device Ready";
-            deviceLabel.setText("Connected");
+            ss << "Dispositivo Listo";
+            deviceLabel.setText("Conectado");
             break;
         default:
             return;

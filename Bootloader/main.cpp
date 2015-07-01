@@ -34,9 +34,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QCoreApplication::setOrganizationName("Microchip");
-    QCoreApplication::setOrganizationDomain("microchip.com");
-    QCoreApplication::setApplicationName("USB HID Bootloader");
+    QCoreApplication::setOrganizationName("TIDE S.A.");
+    QCoreApplication::setOrganizationDomain("tide.cl");
+    QCoreApplication::setApplicationName("Senso Bootloader");
 
     MainWindow w;
     w.show();
